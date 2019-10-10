@@ -1,0 +1,53 @@
+﻿@model List<ThaoTacSQL.Models.ViewModels.DonHangViewModel>
+@{
+    ViewBag.Title = "Home Page";
+}
+
+@Html.ActionLink("Thêm đơn hàng", "ThemDonHang", "DonHang", null, new { @class = "btn btn-success" })
+
+@using (Html.BeginForm("DonHangTheoNgay", "DonHang", FormMethod.Post))
+{
+    <div class="form-group">
+        <input type="date" name="ngay" value="@(ViewBag.Ngay ?? DateTime.Now)" class="form-control" />
+        <small class="text-danger"></small>
+    </div>
+    <input type="submit" value="Tìm" class="btn btn-primary" />
+}
+
+@if (Model == null || Model.Count <= 0)
+{
+    <h4>Không có đơn hàng nào</h4>
+}
+else
+{
+    <table class="table table-striped">
+    <tr>
+        <th>Mã đơn hàng</th>
+        <th>Thời gian</th>
+        <th>Khối lượng giặt</th>
+        <th>Tên khách hàng</th>
+        <th>Giao tận nơi</th>
+        <th>Địa chỉ</th>
+        <th>Giá tiền</th>
+        <th>Tiền thêm</th>
+        <th>Tổng tiền</th>
+        <th>Trạng thái</th>
+    </tr>
+
+    @foreach (var donHang in Model)
+    {
+        <tr>
+            <td>@donHang.MaDonHang.Substring(0, 10)</td>
+            <td>@donHang.ThoiGian.ToString("dd/MM/yyyy")</td>
+            <td>@(donHang.KhoiLuongGiat)Kg</td>
+            <td>@donHang.TenKhachHang</td>
+            <td>@(donHang.GiaoTanNoi ? "Có" : "Không")</td>
+            <td>@donHang.DiaChiGiaoHang</td>
+            <td>@(donHang.GiaTien)đồng</td>
+            <td>@(donHang.TienThem)đồng</td>
+            <td>@(donHang.TongTien)đồng</td>
+            <td>@(donHang.DaThanhToan ? "Đã thanh toán" : "Chưa thanh toán")</td>
+        </tr>
+    }
+</table>
+}
